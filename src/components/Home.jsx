@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { useSearchParams } from "react-router-dom";
 import { MdContentCopy } from "react-icons/md";
+import toast from "react-hot-toast";
 
 
 
@@ -11,7 +12,7 @@ const Home = (props) => {
   const [searchParams, updateSearchParams] = useSearchParams();
   const pasteId = searchParams.get("pasteId");
   const baseUrl = import.meta.env.VITE_PASTE_URL;
-
+  const [loading, setLoading] = useState(false);
 
 
 
@@ -22,12 +23,13 @@ const Home = (props) => {
     // console.log(pasteId);
     const fetchPaste = async () => {
       try {
+        setLoading(true);
         const getPasteResponse = await fetch(`${baseUrl}/getPaste/${pasteId}`);
         const getPaste = await getPasteResponse.json();
         console.log("get Paste-->", getPaste.data);
         setTitle(getPaste.data.title);
         setContent(getPaste.data.content);
-
+        setLoading(false);
       } catch (error) {
         console.log("error in getting single paste-->", error);
       }
@@ -39,7 +41,7 @@ const Home = (props) => {
 
   }, [pasteId])
 
-   async function createPaste() {
+  async function createPaste() {
     const paste = {
       title: title,
       content: content,
@@ -47,7 +49,6 @@ const Home = (props) => {
 
     if (pasteId) {
       //update paste
-
 
       try {
         const updatePaste = await fetch(`${baseUrl}/updatePaste/${pasteId}`, {
@@ -57,8 +58,10 @@ const Home = (props) => {
           },
           body: JSON.stringify(paste),
         })
+        toast.success("updated successfully...")
       } catch (error) {
         console.log("error in update", error);
+        toast.error("error occured..")
       }
     }
     else {
@@ -72,8 +75,10 @@ const Home = (props) => {
           },
           body: JSON.stringify(paste),
         });
+        toast.success("created successfully...")
       } catch (error) {
         console.log("error in post", error);
+        toast.error("error occured")
       }
 
 
@@ -89,6 +94,7 @@ const Home = (props) => {
 
 
   return (
+
     <div className="flex flex-col gap-5 max-w-[1200px] mx-auto mt-5 screenMargin">
 
       <div className="flex gap-10 max-w-[1200px]">
@@ -115,10 +121,15 @@ const Home = (props) => {
 
           </button>
         </div>
-        <textarea placeholder="Enter your content here..." value={content} name="content" onChange={(e) => setContent(e.target.value)} className="px-5 py-2 max-w-[1200px]  focus-visible:ring-0" rows={20} required></textarea>
+        {
+          loading? <div className="flex flex-col items-center min-h-[80vh] justify-center gap-5 max-w-[1200px] mx-auto mt-5 screenMargin "> <div className="dots"></div></div> :
+           <textarea placeholder="Enter your content here..." value={content} name="content" onChange={(e) => setContent(e.target.value)} className="px-5 py-2 max-w-[1200px]  focus-visible:ring-0" rows={20} required></textarea>
+        }
       </div>
 
     </div>
+
+
   )
 };
 
