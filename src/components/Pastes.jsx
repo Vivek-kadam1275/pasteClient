@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react"
-import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { RWebShare } from "react-web-share";
@@ -26,7 +25,6 @@ const Pastes = (props) => {
 
 
   async function deleteHandler(id) {
-    // console.log(id);
     try {
       const deletePaste = await fetch(`${baseUrl}/deletePaste/${id}`, {
         method: "DELETE",
@@ -34,6 +32,7 @@ const Pastes = (props) => {
           "Content-Type": "application/json",
         },
       })
+      fetchData();
     } catch (error) {
       console.log("error in deleting paste", error);
     }
@@ -42,23 +41,22 @@ const Pastes = (props) => {
   }
 
 
+  const fetchData = async () => {
 
-  useEffect(() => {
     try {
+      setLoading(true);
+      const response = await fetch(`${baseUrl}/getPastes`);
+      const Data = await response.json();
+      // console.log(Data);
+      setPasteData(Data.data);
+      setLoading(false);
 
-      const fetchData = async () => {
-        setLoading(true);
-        const response = await fetch(`${baseUrl}/getPastes`);
-        const Data = await response.json();
-        // console.log(Data);
-        setPasteData(Data.data);
-        setLoading(false);
-
-      }
-      fetchData();
     } catch (error) {
       console.log("error in fetching pastes");
     }
+  }
+  useEffect(() => {
+     fetchData();
   }, [])
 
 

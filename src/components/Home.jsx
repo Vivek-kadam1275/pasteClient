@@ -35,8 +35,6 @@ const Home = (props) => {
       }
     }
 
-
-
     fetchPaste();
 
   }, [pasteId])
@@ -122,8 +120,8 @@ const Home = (props) => {
           </button>
         </div>
         {
-          loading? <div className="flex flex-col items-center min-h-[80vh] justify-center gap-5 max-w-[1200px] mx-auto mt-5 screenMargin "> <div className="dots"></div></div> :
-           <textarea placeholder="Enter your content here..." value={content} name="content" onChange={(e) => setContent(e.target.value)} className="px-5 py-2 max-w-[1200px]  focus-visible:ring-0" rows={20} required></textarea>
+          loading ? <div className="flex flex-col items-center min-h-[80vh] justify-center gap-5 max-w-[1200px] mx-auto mt-5 screenMargin "> <div className="dots"></div></div> :
+            <textarea placeholder="Enter your content here..." value={content} name="content" onChange={(e) => setContent(e.target.value)} className="px-5 py-2 max-w-[1200px]  focus-visible:ring-0" rows={20} required></textarea>
         }
       </div>
 
