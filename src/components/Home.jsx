@@ -63,6 +63,7 @@ const Home = (props) => {
           body: JSON.stringify(paste),
         })
         const data=await data.json();
+        console.log(data);
         if(data.success){
          
           toast.success("updated successfully...")
