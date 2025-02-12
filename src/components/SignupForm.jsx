@@ -44,7 +44,7 @@ const SignupForm = (props) => {
 
     return (
         
-        <form onSubmit={handleSubmit} className="text-white flex flex-col gap-0 h-[350px] w-[450px] justify-around ">
+        <form onSubmit={handleSubmit} className="text-white flex flex-col gap-0 h-[350px] w-[450px] justify-around signup-width-res">
             <div className="flex flex-col gap-1">
                 <h2 className="text-2xl font-bold text-pretty">Join the millions learning to Code with StudyNotion for free</h2>
                 <p className="opacity-70">Build skills for today, tomorrow and beyond</p>

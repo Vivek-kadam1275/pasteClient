@@ -10,9 +10,9 @@ const LoginSignupPage = ({ type }) => {
   // console.log(isAuthenticated);
 
   return (
-    <div className="bg-[#010811] h-[93vh] ">
+    <div className="bg-[#010811] h-[93vh] registration-height-res ">
 
-      {type === "register" ? <div className="flex max-w-[1160px] mx-auto justify-around h-[80vh] items-center">
+      {type === "register" ? <div className="flex max-w-[1160px] mx-auto justify-around h-[80vh] items-center registration-res">
         <div className="relative">
           <img src={frame} alt={frame} loading="lazy" className="absolute top-2 left-2 w-[350px] h-[350px] rounded " />
           <img src={signup} alt={signup} loading="lazy" className=" relative w-[350px] h-[350px] rounded" />
@@ -21,7 +21,7 @@ const LoginSignupPage = ({ type }) => {
         <SignupForm />
 
       </div> :
-        <div className="flex max-w-[1160px] mx-auto justify-around h-[80vh] items-center">
+        <div className="flex max-w-[1160px] mx-auto justify-around h-[80vh] items-center registration-res ">
 
           <div className="relative">
             <img src={frame} alt={frame} loading="lazy" className="absolute top-2 left-2 w-[350px] h-[350px] rounded " />

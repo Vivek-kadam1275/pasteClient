@@ -32,6 +32,26 @@
     
 }
 
+@media screen and (max-width:825px){
+    .registration-res{
+      display: flex;
+      flex-direction: column;
+      height:fit-content;
+      gap: 6px;
+
+    }
+    .registration-height-res{
+      height: fit-content;
+    }
+   
+}
+
+@media screen and (max-width:456px){
+   .signup-width-res{
+      width: 350px;
+    }
+}
+
 
 .dots {
   width: 56px;
