@@ -2,43 +2,74 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
-import { createBrowserRouter,RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Home from './components/Home'
 import Navbar from './components/Navbar'
- import ViewPaste from './components/ViewPaste'
+import ViewPaste from './components/ViewPaste'
 import { Toaster } from 'react-hot-toast'
 import Pastes from './components/Pastes'
+ import LoginSignupPage from './pages/LoginSignupPage'
+import ProtectedRoute from './components/ProtectedRoute'
 
 
 function App() {
- 
-  const router=createBrowserRouter([
+
+  // const [isAuthenticated,setIsAuthenticated]=useState(false);
+  // console.log(isAuthenticated);
+
+   const router = createBrowserRouter([
     {
-    path:"/",
-    element:<div>
-      <Navbar/>
-      <Home/>
-    </div>
+      path: "/signup",
+      element: 
+       <div>
+         <Navbar    />
+         <LoginSignupPage type="register"  />
+       </div>
+       
     },
     {
-      path:"/pastes",
-      element:<div>
-        <Navbar/>
-        <Pastes/>
-      </div>
+      path: "/login",
+      element: 
+       <div>
+         <Navbar    />
+         <LoginSignupPage type="login"  />
+       </div>
+       
     },
     {
-      path:"/pastes/:id",
-      element:<div>
-        <Navbar/>
-        <ViewPaste/>
-      </div>
+      path: "/",
+      element: 
+       <ProtectedRoute>
+          
+         <Navbar/>
+         <Home />
+        
+       </ProtectedRoute>
+       
+    },
+    {
+      path: "/pastes",
+      element:  
+      <ProtectedRoute>
+            <Navbar   />
+            <Pastes />
+      </ProtectedRoute>
+      
+     
+    },
+    {
+      path: "/pastes/:id",
+      element: <ProtectedRoute>
+        <Navbar     />
+        <ViewPaste />
+      </ProtectedRoute>
     }
   ])
   return (
-    <div className='relative'>
-      <RouterProvider router={router}/>
-      <Toaster position='top-right'/> 
+    <div className='relative' >
+
+      <RouterProvider router={router}  />
+      <Toaster position='top-right' />
     </div>
   )
 }

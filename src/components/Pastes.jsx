@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, {   useState } from "react"
 import { NavLink, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { RWebShare } from "react-web-share";
@@ -7,7 +7,8 @@ import { RiDeleteBin5Line } from "react-icons/ri";
 import { MdContentCopy } from "react-icons/md";
 import { FiShare } from "react-icons/fi";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
-
+import { useContext,useEffect } from "react";
+import { AppContext } from "../context/AppContext";
 
 
 
@@ -16,11 +17,13 @@ const Pastes = (props) => {
   const [searchItem, setSearchItem] = useState("");
   const [pasteData, setPasteData] = useState([]);
   const [loading, setLoading] = useState(false);
+      const { isAuthenticated, setIsAuthenticated } = useContext(AppContext);
+  
   const baseUrl = import.meta.env.VITE_PASTE_URL;
   // filtering data based on searchItem
   const filteredData = pasteData.filter((item) => (item.title.toLowerCase().includes(searchItem.toLowerCase())));
 
-
+ const navigate=useNavigate();
 
 
 
@@ -28,13 +31,15 @@ const Pastes = (props) => {
     try {
       const deletePaste = await fetch(`${baseUrl}/deletePaste/${id}`, {
         method: "DELETE",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
       })
-      fetchData();
+      setPasteData((prevData) => prevData.filter((paste) => paste._id !== id));
     } catch (error) {
       console.log("error in deleting paste", error);
+      
     }
 
 
@@ -45,18 +50,30 @@ const Pastes = (props) => {
 
     try {
       setLoading(true);
-      const response = await fetch(`${baseUrl}/getPastes`);
+      const response = await fetch(`${baseUrl}/getPastes`, {
+        method: "GET",
+        credentials: "include",
+      });
       const Data = await response.json();
-      // console.log(Data);
-      setPasteData(Data.data);
+      console.log(Data);
+      if(Data.success){
+        setPasteData(Data.data);
+      
+      }else{
+        toast.error(Data.message);
+        setIsAuthenticated(false);
+        navigate("/login");
+      }
       setLoading(false);
 
     } catch (error) {
       console.log("error in fetching pastes");
+      setLoading(false);
+      navigate("/login");
     }
   }
   useEffect(() => {
-     fetchData();
+    fetchData();
   }, [])
 
 

@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react"
-import { useSearchParams } from "react-router-dom";
+import React, {   useState } from "react"
+import { data, useSearchParams } from "react-router-dom";
 import { MdContentCopy } from "react-icons/md";
 import toast from "react-hot-toast";
 
-
+import { useContext,useEffect } from "react";
+import { AppContext } from "../context/AppContext";
 
 const Home = (props) => {
 
@@ -13,6 +14,7 @@ const Home = (props) => {
   const pasteId = searchParams.get("pasteId");
   const baseUrl = import.meta.env.VITE_PASTE_URL;
   const [loading, setLoading] = useState(false);
+      const { isAuthenticated, setIsAuthenticated } = useContext(AppContext);
 
 
 
@@ -24,7 +26,10 @@ const Home = (props) => {
     const fetchPaste = async () => {
       try {
         setLoading(true);
-        const getPasteResponse = await fetch(`${baseUrl}/getPaste/${pasteId}`);
+        const getPasteResponse = await fetch(`${baseUrl}/getPaste/${pasteId}`,{
+          method: "GET",
+          credentials: "include",
+      });
         const getPaste = await getPasteResponse.json();
         console.log("get Paste-->", getPaste.data);
         setTitle(getPaste.data.title);
@@ -54,12 +59,24 @@ const Home = (props) => {
           headers: {
             "Content-Type": "application/json",
           },
+          credentials:"include",
           body: JSON.stringify(paste),
         })
-        toast.success("updated successfully...")
+        const data=await data.json();
+        if(data.success){
+         
+          toast.success("updated successfully...")
+        }else{
+          toast.error(data.message);
+          setIsAuthenticated(false);
+          navigate("/login");
+        }
+        
       } catch (error) {
         console.log("error in update", error);
         toast.error("error occured..")
+        setIsAuthenticated(false);
+        navigate("/login");
       }
     }
     else {
@@ -71,12 +88,26 @@ const Home = (props) => {
           headers: {
             "Content-Type": "application/json",
           },
+          credentials:"include",
+          
           body: JSON.stringify(paste),
         });
-        toast.success("created successfully...")
+        const data=await createPaste.json();
+        console.log(data);
+        if(data.success){
+         
+          toast.success("created successfully...")
+        }else{
+          toast.error(data.message);
+          setIsAuthenticated(false);
+          navigate("/login");
+        }
+       
       } catch (error) {
         console.log("error in post", error);
         toast.error("error occured")
+        setIsAuthenticated(false);
+        navigate("/login");
       }
 
 

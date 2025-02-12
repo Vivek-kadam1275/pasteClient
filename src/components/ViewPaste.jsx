@@ -17,7 +17,10 @@ const ViewPaste = (props) => {
   const fetchPaste = async () => {
     try {
       setLoading(true);
-      const getPasteResponse = await fetch(`${baseUrl}/getPaste/${id}`);
+      const getPasteResponse = await fetch(`${baseUrl}/getPaste/${id}`, {
+        method: "GET",
+        credentials: "include",
+      });
       const getPaste = await getPasteResponse.json();
       console.log("get Paste-->", getPaste.data);
       setViewTitle(getPaste.data.title);
@@ -26,6 +29,7 @@ const ViewPaste = (props) => {
 
     } catch (error) {
       console.log("error in getting single paste-->", error);
+      setLoading(false);
     }
   }
 
