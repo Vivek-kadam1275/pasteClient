@@ -62,7 +62,7 @@ const Home = (props) => {
           credentials:"include",
           body: JSON.stringify(paste),
         })
-        const data=await data.json();
+        const data=await updatePaste.json();
         console.log(data);
         if(data.success){
          
