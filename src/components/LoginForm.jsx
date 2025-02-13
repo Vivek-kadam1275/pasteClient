@@ -46,9 +46,10 @@ const LoginForm = ({ }) => {
 
             }
         } catch (error) {
+            navigate("/login");
             console.log("error in login step....", error);
             toast.error(error);
-            navigate("/login");
+            
         }
     }
 
