@@ -25,8 +25,10 @@ const Navbar = (props) => {
       if (data.success) {
         toast.success("logged out successfully...");
         setIsAuthenticated(false);
+        navigate("/login");
+        
         setTimeout(() => {
-          navigate("/login");
+         
           window.location.reload(); // Ensure fresh auth check
         }, 500);
          

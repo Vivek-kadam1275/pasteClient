@@ -31,13 +31,14 @@ const ProtectedRoute = ({ children }) => {
             setLoading(false); // Mark verification as complete
         } catch (error) {
             console.log("error while verifying", error);
+            setIsAuthenticated(false);  // ✅ Ensure auth state updates on erro
         }
     }
     useEffect(() => {
 
         verifyUser();
         // console.log(isAuthenticated);
-    }, [setIsAuthenticated]);
+    }, [ ]);
 
     if (loading) {
         return <div className="flex w-full h-[100vh] justify-center  items-center bg-[#010811]">

@@ -1,9 +1,9 @@
-import React, {   useState } from "react"
+import React, { useState } from "react"
 import { data, useSearchParams } from "react-router-dom";
 import { MdContentCopy } from "react-icons/md";
 import toast from "react-hot-toast";
 
-import { useContext,useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { AppContext } from "../context/AppContext";
 
 const Home = (props) => {
@@ -14,10 +14,15 @@ const Home = (props) => {
   const pasteId = searchParams.get("pasteId");
   const baseUrl = import.meta.env.VITE_PASTE_URL;
   const [loading, setLoading] = useState(false);
-      const { isAuthenticated, setIsAuthenticated } = useContext(AppContext);
+  const { isAuthenticated, setIsAuthenticated } = useContext(AppContext);
 
 
-
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/login");
+    }
+  }, [isAuthenticated]);  // ✅ Redirect if auth state changes
+  
   useEffect(() => {
     if (!pasteId) {
       return;
@@ -26,10 +31,10 @@ const Home = (props) => {
     const fetchPaste = async () => {
       try {
         setLoading(true);
-        const getPasteResponse = await fetch(`${baseUrl}/getPaste/${pasteId}`,{
+        const getPasteResponse = await fetch(`${baseUrl}/getPaste/${pasteId}`, {
           method: "GET",
           credentials: "include",
-      });
+        });
         const getPaste = await getPasteResponse.json();
         console.log("get Paste-->", getPaste.data);
         setTitle(getPaste.data.title);
@@ -60,20 +65,20 @@ const Home = (props) => {
           headers: {
             "Content-Type": "application/json",
           },
-          credentials:"include",
+          credentials: "include",
           body: JSON.stringify(paste),
         })
-        const data=await updatePaste.json();
+        const data = await updatePaste.json();
         console.log(data);
-        if(data.success){
-         
+        if (data.success) {
+
           toast.success("updated successfully...")
-        }else{
+        } else {
           toast.error(data.message);
           setIsAuthenticated(false);
           navigate("/login");
         }
-        
+
       } catch (error) {
         console.log("error in update", error);
         toast.error("error occured..")
@@ -90,21 +95,21 @@ const Home = (props) => {
           headers: {
             "Content-Type": "application/json",
           },
-          credentials:"include",
-          
+          credentials: "include",
+
           body: JSON.stringify(paste),
         });
-        const data=await createPaste.json();
+        const data = await createPaste.json();
         console.log(data);
-        if(data.success){
-         
+        if (data.success) {
+
           toast.success("created successfully...")
-        }else{
+        } else {
           toast.error(data.message);
           setIsAuthenticated(false);
           navigate("/login");
         }
-       
+
       } catch (error) {
         console.log("error in post", error);
         toast.error("error occured")
@@ -134,7 +139,7 @@ const Home = (props) => {
           // console.log(title);
         }} className="p-2 px-5  w-[80%] border rounded-md" required />
 
-        <button className="  text-white rounded-md w-[20%] min-w-fit bg-[#1d4ed8] font-semibold px-2"  type="submit">
+        <button className="  text-white rounded-md w-[20%] min-w-fit bg-[#1d4ed8] font-semibold px-2" type="submit">
           {pasteId ? "update my paste" : "create my paste"}
         </button>
 
@@ -147,7 +152,7 @@ const Home = (props) => {
             <div className="w-4 h-4 rounded-full bg-[#febc2e]"></div>
             <div className="w-4 h-4 rounded-full bg-[#2dc842]"></div>
           </div>
-          <div onClick={()=>{
+          <div onClick={() => {
             navigator.clipboard.writeText(content);
             toast.success("Copied successfully")
           }}>
