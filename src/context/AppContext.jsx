@@ -9,9 +9,9 @@ import { createContext ,useState,useEffect} from "react";
        false
     );
   
-    // useEffect(() => {
-    //   localStorage.setItem("isAuthenticated", isAuthenticated);
-    // }, [isAuthenticated]);
+    useEffect(() => {
+      localStorage.setItem("isAuthenticated", isAuthenticated);
+    }, [isAuthenticated]);
 
     const value={isAuthenticated,setIsAuthenticated}
   

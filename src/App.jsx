@@ -14,8 +14,7 @@ import ProtectedRoute from './components/ProtectedRoute'
 
 function App() {
 
-  // const [isAuthenticated,setIsAuthenticated]=useState(false);
-  // console.log(isAuthenticated);
+   
 
    const router = createBrowserRouter([
     {

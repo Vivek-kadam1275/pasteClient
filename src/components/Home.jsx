@@ -44,7 +44,8 @@ const Home = (props) => {
 
   }, [pasteId])
 
-  async function createPaste() {
+  async function handleSubmit(e) {
+    e.preventDefault();
     const paste = {
       title: title,
       content: content,
@@ -125,7 +126,7 @@ const Home = (props) => {
 
   return (
 
-    <div className="flex flex-col gap-5 max-w-[1200px] mx-auto mt-5 screenMargin">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-5 max-w-[1200px] mx-auto mt-5 screenMargin">
 
       <div className="flex gap-10 max-w-[1200px]">
         <input type="text" placeholder="Title" value={title} name="title" onChange={(e) => {
@@ -133,7 +134,7 @@ const Home = (props) => {
           // console.log(title);
         }} className="p-2 px-5  w-[80%] border rounded-md" required />
 
-        <button className="  text-white rounded-md w-[20%] min-w-fit bg-[#1d4ed8] font-semibold px-2" onClick={createPaste}>
+        <button className="  text-white rounded-md w-[20%] min-w-fit bg-[#1d4ed8] font-semibold px-2"  type="submit">
           {pasteId ? "update my paste" : "create my paste"}
         </button>
 
@@ -146,10 +147,13 @@ const Home = (props) => {
             <div className="w-4 h-4 rounded-full bg-[#febc2e]"></div>
             <div className="w-4 h-4 rounded-full bg-[#2dc842]"></div>
           </div>
-          <button>
+          <div onClick={()=>{
+            navigator.clipboard.writeText(content);
+            toast.success("Copied successfully")
+          }}>
             <MdContentCopy />
 
-          </button>
+          </div>
         </div>
         {
           loading ? <div className="flex flex-col items-center min-h-[80vh] justify-center gap-5 max-w-[1200px] mx-auto mt-5 screenMargin "> <div className="dots"></div></div> :
@@ -157,7 +161,7 @@ const Home = (props) => {
         }
       </div>
 
-    </div>
+    </form>
 
 
   )
