@@ -17,11 +17,11 @@ const Home = (props) => {
   const { isAuthenticated, setIsAuthenticated } = useContext(AppContext);
 
 
-  useEffect(() => {
-    if (!isAuthenticated) {
-      navigate("/login");
-    }
-  }, [isAuthenticated]);  // ✅ Redirect if auth state changes
+  // useEffect(() => {
+  //   if (!isAuthenticated) {
+  //     navigate("/login");
+  //   }
+  // }, [isAuthenticated]);  // ✅ Redirect if auth state changes
   
   useEffect(() => {
     if (!pasteId) {
