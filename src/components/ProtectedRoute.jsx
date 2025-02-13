@@ -40,7 +40,7 @@ const ProtectedRoute = ({ children }) => {
     }, [setIsAuthenticated]);
 
     if (loading) {
-        return <div className="flex w-full justify-center  items-center min-h-24 ">
+        return <div className="flex w-full h-[100vh] justify-center  items-center bg-[#010811]">
             <div className="dots "></div>
         </div>; // You can replace this with a spinner
     }
